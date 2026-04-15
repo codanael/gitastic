@@ -23,9 +23,26 @@ def transform_commit(
     comment = commit.get("comment", "")
     first_line = comment.split("\n", 1)[0][:256]
 
+    author = commit.get("author", {})
+    committer = commit.get("committer", {})
+
+    user: dict[str, str] = {}
+    if author.get("name"):
+        user["name"] = author["name"]
+    if author.get("email"):
+        user["email"] = author["email"]
+
+    committer_doc: dict[str, str] = {}
+    if committer.get("name"):
+        committer_doc["name"] = committer["name"]
+    if committer.get("email"):
+        committer_doc["email"] = committer["email"]
+    if committer.get("date"):
+        committer_doc["date"] = committer["date"]
+
     return {
         # ECS fields
-        "@timestamp": commit["author"]["date"],
+        "@timestamp": author.get("date"),
         "message": first_line,
         "event": {
             "kind": "event",
@@ -35,10 +52,7 @@ def transform_commit(
             "module": "azure_devops",
             "dataset": "azure_devops.commit",
         },
-        "user": {
-            "name": commit["author"]["name"],
-            "email": commit["author"]["email"],
-        },
+        "user": user,
         # Custom namespace
         "azure_devops": {
             "organization": organization,
@@ -53,11 +67,7 @@ def transform_commit(
             "commit": {
                 "id": commit["commitId"],
                 "url": commit.get("remoteUrl", ""),
-                "committer": {
-                    "name": commit["committer"]["name"],
-                    "email": commit["committer"]["email"],
-                    "date": commit["committer"]["date"],
-                },
+                "committer": committer_doc,
                 "change_counts": {
                     "add": add,
                     "edit": edit,

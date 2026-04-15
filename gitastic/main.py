@@ -69,6 +69,7 @@ def _bulk_actions(
     for doc in docs:
         actions.append(
             {
+                "_op_type": "create",
                 "_index": datastream,
                 "_id": doc["azure_devops"]["commit"]["id"],
                 "_source": doc,
