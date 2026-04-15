@@ -1,0 +1,16 @@
+azure_devops:
+  organization: "my-org"
+  pat: "${AZDO_PAT}"
+  # base_url: "https://azuredevops.my-company.com"  # on-prem instance (default: https://dev.azure.com)
+  projects:
+    - "ProjectA"
+    - "ProjectB"
+    - "ProjectC"
+
+elasticsearch:
+  hosts: ["https://es-cluster:9200"]
+  api_key: "${ES_API_KEY}"
+  datastream: "azure_devops.commit"
+
+polling:
+  initial_lookback_days: 90
