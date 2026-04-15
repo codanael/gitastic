@@ -116,3 +116,29 @@ Each commit is indexed as an ECS-compliant document with:
 - **Custom fields**: `azure_devops.organization`, `azure_devops.project.*`, `azure_devops.repository.*`, `azure_devops.commit.*`
 
 The `change_counts` fields (`add`, `edit`, `delete`, `total`) represent the **number of files** changed, not lines.
+
+## Kibana dashboard
+
+A ready-to-import dashboard is included in `kibana/dashboard.ndjson`.
+
+### Import
+
+In Kibana, go to **Stack Management > Saved Objects > Import** and upload the file. The data view for `azure_devops.commit` is included.
+
+### Panels
+
+| Panel | Type | Description |
+|---|---|---|
+| Total commits | Metric | Overall commit count |
+| Unique authors | Metric | Distinct committer count |
+| Active repos | Metric | Distinct repository count |
+| Avg files changed | Metric | Average `change_counts.total` per commit |
+| Commits over time | Bar chart | Date histogram of commit volume |
+| File changes over time | Stacked area | Sum of files added / edited / deleted over time |
+| Top authors | Horizontal bar | Top 15 authors by commit count |
+| Top repos | Horizontal bar | Top 15 repos by commit count |
+| Commits by project | Donut | Commit share per Azure DevOps project |
+| Commit size distribution | Histogram | Bucketed distribution of files changed per commit (0, 1, 2-5, 6-10, 11-20, 21-50, 51+) |
+| Avg change size by author | Dual-axis bar | Average files changed vs commit count per author |
+| Commit heatmap | Heatmap | Activity by day of week and hour of day |
+| Recent commits table | Data table | Detailed commit log with change counts |
